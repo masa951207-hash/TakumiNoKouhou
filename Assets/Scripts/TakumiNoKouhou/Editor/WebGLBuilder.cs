@@ -58,19 +58,29 @@ namespace TakumiNoKouhou.Editor
 
             ApplyWebGLSettings(Application.version);
 
+            // Unity はフォルダ名をビルドファイル名のプレフィックスに使う。
+            // "TakumiNoKouhou" という名前の一時フォルダでビルドして docs/ に移動することで
+            // TakumiNoKouhou.data / .wasm という名前になる。
+            var tempDir = Path.Combine(projectRoot, "Builds", "WebGL", "TakumiNoKouhou");
+
+            if (Directory.Exists(tempDir)) Directory.Delete(tempDir, recursive: true);
+            if (Directory.Exists(outputDir)) Directory.Delete(outputDir, recursive: true);
+
             var opts = new BuildPlayerOptions
             {
                 scenes           = Scenes,
-                locationPathName = outputDir,
+                locationPathName = tempDir,
                 target           = BuildTarget.WebGL,
                 options          = BuildOptions.None,
             };
 
-            Debug.Log($"[匠の工法] WebGL ビルド開始 → {outputDir}");
+            Debug.Log($"[匠の工法] WebGL ビルド開始 → {tempDir}");
             var report = BuildPipeline.BuildPlayer(opts);
 
             if (report.summary.result == BuildResult.Succeeded)
             {
+                // 一時フォルダを docs/ に移動
+                Directory.Move(tempDir, outputDir);
                 Debug.Log($"[匠の工法] WebGL ビルド成功 → {outputDir}");
                 EditorUtility.DisplayDialog(
                     "WebGL ビルド完了",
@@ -84,6 +94,7 @@ namespace TakumiNoKouhou.Editor
             }
             else
             {
+                if (Directory.Exists(tempDir)) Directory.Delete(tempDir, recursive: true);
                 Debug.LogError($"[匠の工法] WebGL ビルド失敗: {report.summary.result}");
                 EditorUtility.DisplayDialog("ビルド失敗",
                     $"WebGL ビルドに失敗しました。\nConsole を確認してください。\n\n{report.summary.result}",

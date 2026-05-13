@@ -4,6 +4,8 @@
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
+# GitHub Pages WebGL ビルド成果物は追跡対象
+!docs/Build/
 [Ll]ogs/
 [Mm]emoryCaptures/
 [Uu]serSettings/
