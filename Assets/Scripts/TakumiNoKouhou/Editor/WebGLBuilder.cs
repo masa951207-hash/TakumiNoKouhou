@@ -47,13 +47,14 @@ namespace TakumiNoKouhou.Editor
                 throw new Exception($"WebGL build failed: {report.summary.result}");
         }
 
-        // ─────────────────── ローカルビルド（メニューから実行）───────────────────
+        // ─────────────────── ローカルビルド → docs/ フォルダ出力（GitHub Pages用）───────────────────
 
-        [MenuItem("匠の工法/WebGL ビルド（デスクトップ出力）", priority = 11)]
-        public static void BuildLocal()
+        [MenuItem("匠の工法/WebGL ビルド（docs/ → GitHub Pages）", priority = 11)]
+        public static void BuildToDocs()
         {
-            var desktop   = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            var outputDir = Path.Combine(desktop, "匠の工法_WebGL");
+            // プロジェクトルート直下の docs/ に出力（GitHub Pages: main branch / /docs）
+            var projectRoot = Path.GetDirectoryName(Application.dataPath);
+            var outputDir   = Path.Combine(projectRoot, "docs");
 
             ApplyWebGLSettings(Application.version);
 
@@ -65,7 +66,7 @@ namespace TakumiNoKouhou.Editor
                 options          = BuildOptions.None,
             };
 
-            Debug.Log($"[匠の工法] WebGL ビルド開始: {outputDir}");
+            Debug.Log($"[匠の工法] WebGL ビルド開始 → {outputDir}");
             var report = BuildPipeline.BuildPlayer(opts);
 
             if (report.summary.result == BuildResult.Succeeded)
@@ -73,9 +74,12 @@ namespace TakumiNoKouhou.Editor
                 Debug.Log($"[匠の工法] WebGL ビルド成功 → {outputDir}");
                 EditorUtility.DisplayDialog(
                     "WebGL ビルド完了",
-                    $"デスクトップに出力しました。\n\n{outputDir}\n\n" +
-                    "ブラウザで開く場合はローカルサーバーが必要です。\n" +
-                    "例: python -m http.server 8000",
+                    $"docs/ フォルダに出力しました。\n\n{outputDir}\n\n" +
+                    "次のステップ:\n" +
+                    "1. git add docs/\n" +
+                    "2. git commit -m \"WebGL build\"\n" +
+                    "3. git push\n\n" +
+                    "ローカル確認: python -m http.server 8000 (docs/ で実行)",
                     "OK");
             }
             else
