@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcec1afc76428fa4984eba9a11aa45e4, type: 3}
+  m_Name: Stage_002
+  m_EditorClassIdentifier: 
+  stageNumber: 2
+  stageName: "\u5F15\u5F35\u3068\u87FB\u306E\u5F62"
+  stageDescription: "\u300C\u5730\u9707\u306F\u6A2A\u304B\u3089\u63FA\u3089\u3059\u3002\n\u5F15\u5F35\u529B\u304C\u751F\u307E\u308C\u308B\u5834\u6240\u306B\u87FB\u7D99\u304E\u3092\u4F7F\u3048\u3002\n\u53F0\u5F62\u306E\u5F62\u304C\u629C\u3051\u3092\u9632\u3050\u306E\u3060\u3002\u300D"
+  thumbnail: {fileID: 0}
+  unlockAfterStage: 1
+  requiredGrade: 2
+  availablePieces:
+  - pieceData: {fileID: 11400000, guid: b1f60aeff3ed6cf458afb72388409216, type: 2}
+    count: 2
+  - pieceData: {fileID: 11400000, guid: 239210c212901b14090ade88c1a74c58, type: 2}
+    count: 1
+  - pieceData: {fileID: 11400000, guid: 9a1c7eecb099fa64c94ddee7cca6b0bd, type: 2}
+    count: 1
+  anchorPieces: []
+  gridSize: {x: 5, y: 4}
+  verticalLoad: 20
+  seismicIntensity: 0.35
+  seismicDuration: 20
+  minimumPassGrade: 2
+  clearMessage: "\u300C\u87FB\u5F62\u306E\u529B\u3092\u7406\u89E3\u3057\u305F\u304B\u3002\n\u5F15\u5F35\u306B\u9006\u3089\u308F\u305A\u3001\u5F62\u3067\u53D7\u3051\u6B62\u3081\u308B\u3002\u305D\u308C\u304C\u6728\u306E\u77E5\u6075\u3060\u3002\u300D"
+  failMessage: "\u300C\u5F15\u5F35\u304C\u751F\u3058\u308B\u90E8\u4F4D\u306B\u87FB\u7D99\u304E\u3092\u7F6E\u3044\u3066\u3044\u306A\u3044\u3002\n\u9752\u304F\u5149\u308B\u5F15\u5F35\u90E8\u5206\u3092\u78BA\u8A8D\u305B\u3088\u3002\u300D"
+  hints:
+  - "\u6A2A\u63FA\u308C\u304C\u52A0\u308F\u308B\u3068\u3001\u6881\u306E\u7AEF\u90E8\u306B\u5F15\u5F35\u529B\u304C\u767A\u751F\u3059\u308B"
+  - "\u87FB\u7D99\u304E\u306F\u9752\uFF08\u5F15\u5F35\uFF09\u306E\u5834\u6240\u306B\u914D\u7F6E\u3059\u308B\u3068\u52B9\u679C\u7684"
+  - "\u529B\u306E\u6D41\u308C\u3092\u8868\u793A\u3057\u3066\u3001\u3069\u3053\u306B\u5F15\u5F35\u304C\u96C6\u4E2D\u3057\u3066\u3044\u308B\u304B\u78BA\u8A8D\u3057\u3088\u3046"
+  stageBgm: {fileID: 0}

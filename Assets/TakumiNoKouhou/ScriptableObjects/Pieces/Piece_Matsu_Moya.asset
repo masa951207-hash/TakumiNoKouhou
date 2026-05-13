@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 520761432654d2045b188ff5644a8445, type: 3}
+  m_Name: Piece_Matsu_Moya
+  m_EditorClassIdentifier: 
+  pieceName: "\u677E\u30FB\u6BCD\u5C4B"
+  description: "\u5C4B\u6839\u306E\u4E2D\u9593\u3092\u652F\u3048\u308B\u6A2A\u67B6\u6750\uFF08\u6841\u3068\u68DF\u6728\u306E\u9593\uFF09\u3002\n\u5782\u6728\u3092\u53D7\u3051\u3001\u5C4B\u6839\u8377\u91CD\u3092\u5C0F\u5C4B\u675F\u306B\u4F1D\u3048\u308B\u3002"
+  length: 2
+  width: 0.4
+  height: 0.4
+  species: 2
+  density: 550
+  youngsModulus: 11000
+  bendingStrength: 48
+  compressionStrength: 36
+  slots:
+  - slotId: left
+    role: 1
+    direction: 1
+    acceptedShape: 0
+    localPosition: {x: -1.5, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    depth: 0.2
+    slotWidth: 0.15
+    isRequired: 1
+  - slotId: right
+    role: 1
+    direction: 0
+    acceptedShape: 0
+    localPosition: {x: 1.5, y: 0, z: 0}
+    localEulerAngles: {x: 0, y: 0, z: 0}
+    depth: 0.2
+    slotWidth: 0.15
+    isRequired: 1
+  woodMaterial: {fileID: 0}
+  pieceIcon: {fileID: 0}
+  piecePrefab: {fileID: 0}
+  knockSound: {fileID: 0}
+  placeSound: {fileID: 0}

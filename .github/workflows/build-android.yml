@@ -1,0 +1,117 @@
+name: Build Android APK
+
+on:
+  push:
+    branches:
+      - main
+      - release/**
+    tags:
+      - 'v*'
+  workflow_dispatch:          # 手動実行も可能
+
+env:
+  UNITY_PROJECT_PATH: .       # リポジトリルートがUnityプロジェクト
+  BUILD_METHOD: TakumiNoKouhou.Editor.AndroidBuilder.Build
+  BUILD_OUTPUT_DIR: Builds/Android
+
+jobs:
+  # ─────────────────────────────────────────
+  # Job 1: Unityライセンス取得 + APKビルド
+  # ─────────────────────────────────────────
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      # ── ソースコード取得 ──
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Cache Git LFS objects
+        uses: actions/cache@v4
+        with:
+          path: .git/lfs
+          key: git-lfs-${{ runner.os }}-${{ hashFiles('.gitattributes') }}
+
+      # ── Library キャッシュ（再ビルド時間を短縮）──
+      - name: Cache Unity Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-Android-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-Android-
+            Library-
+
+      # ── Unity でビルド（GameCI action）──
+      - name: Build with Unity
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE:      ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL:        ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD:     ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform:     Android
+          unityVersion:       auto              # ProjectSettings/ProjectVersion.txt から自動検出
+          buildMethod:        ${{ env.BUILD_METHOD }}
+          buildName:          TakumiNoKouhou
+          buildsPath:         ${{ env.BUILD_OUTPUT_DIR }}
+          androidExportType:  androidPackage    # APK形式
+          androidKeystoreName: takumi.keystore
+          androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          androidKeystorePass:   ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          androidKeyaliasName:   ${{ secrets.ANDROID_KEY_ALIAS }}
+          androidKeyaliasPass:   ${{ secrets.ANDROID_KEY_PASS }}
+          allowDirtyBuild:    false
+
+      # ── ビルド成果物をアップロード ──
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TakumiNoKouhou-Android-APK
+          path: ${{ env.BUILD_OUTPUT_DIR }}/**/*.apk
+          retention-days: 30
+
+  # ─────────────────────────────────────────
+  # Job 2: タグ push 時に GitHub Releases 公開
+  # ─────────────────────────────────────────
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: TakumiNoKouhou-Android-APK
+          path: ./apk
+
+      - name: Create Release and upload APK
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: 匠の工法 ${{ github.ref_name }}
+          body: |
+            ## 匠の工法 ${{ github.ref_name }}
+
+            ### インストール方法
+            1. 下記の `TakumiNoKouhou.apk` をダウンロード
+            2. Android端末の **設定 → セキュリティ → 提供元不明のアプリ** を許可
+            3. ダウンロードした APK をタップしてインストール
+
+            ### 動作環境
+            - Android 7.0 (API 24) 以上
+            - OpenGL ES 3.0 対応端末
+
+          files: ./apk/**/*.apk
+          draft: false
+          prerelease: false
