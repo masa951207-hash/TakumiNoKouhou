@@ -7,6 +7,5 @@
 *.psd filter=lfs diff=lfs merge=lfs -text
 *.png filter=lfs diff=lfs merge=lfs -text
 *.jpg filter=lfs diff=lfs merge=lfs -text
-# WebGL ビルド成果物（サイズが大きいためLFS管理）
-*.data filter=lfs diff=lfs merge=lfs -text
-*.wasm filter=lfs diff=lfs merge=lfs -text
+# WebGL .data/.wasm は GitHub Pages が LFS 非対応なので通常 git で管理
+# （各ファイル 100MB 未満のため直接コミット可能）
